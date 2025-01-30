@@ -11,6 +11,7 @@ import com.otabek.library.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -37,43 +38,70 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ApiResponse<MemberDto> getMemberById(Integer id) {
-        Optional<Member> optional = memberRepository.findById(id);
-        if (optional.isEmpty()){
-            throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
+        try {
+            Optional<Member> optional = memberRepository.findById(id);
+            if (optional.isEmpty()){
+                throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
+            }
+            return ApiResponse.<MemberDto>builder()
+                    .message("ok")
+                    .success(true)
+                    .content(memberMapper.toDto(optional.get()))
+                    .build();
+        } catch (ContentNotFoundException e) {
+            throw new DatabaseException(e.getMessage());
         }
-        return ApiResponse.<MemberDto>builder()
-                .message("ok")
-                .success(true)
-                .content(memberMapper.toDto(optional.get()))
-                .build();
     }
 
     @Override
     public ApiResponse<MemberDto> updateMemberById(Integer id, MemberDto dto) {
-        Optional<Member> optional = memberRepository.findById(id);
-        if (optional.isEmpty()){
-            throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
-        }
-        Member member = memberMapper.updateAllFields(optional.get(), dto);
-        Member saved = memberRepository.save(member);
+        try {
+            Optional<Member> optional = memberRepository.findById(id);
+            if (optional.isEmpty()){
+                throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
+            }
+            Member member = memberMapper.updateAllFields(optional.get(), dto);
+            Member saved = memberRepository.save(member);
 
-        return ApiResponse.<MemberDto>builder()
-                .message("Successfully updated member")
-                .success(true)
-                .content(memberMapper.toDto(saved))
-                .build();
+            return ApiResponse.<MemberDto>builder()
+                    .message("Successfully updated member")
+                    .success(true)
+                    .content(memberMapper.toDto(saved))
+                    .build();
+        } catch (ContentNotFoundException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     @Override
     public ApiResponse<MemberDto> deleteMemberById(Integer id) {
-        Optional<Member> optional = memberRepository.findById(id);
-        if (optional.isEmpty()){
-            throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
+        try {
+            Optional<Member> optional = memberRepository.findById(id);
+            if (optional.isEmpty()){
+                throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
+            }
+            memberRepository.deleteById(id);
+            return ApiResponse.<MemberDto>builder()
+                    .success(true)
+                    .message("Successfully deleted")
+                    .build();
+        } catch (ContentNotFoundException e) {
+            throw new DatabaseException(e.getMessage());
         }
-        memberRepository.deleteById(id);
-        return ApiResponse.<MemberDto>builder()
-                .success(true)
-                .message("Successfully deleted")
-                .build();
+    }
+
+    @Override
+    public ApiResponse<List<MemberDto>> getAllMembers() {
+        try {
+            List<Member> all = memberRepository.findAll();
+            List<MemberDto> memberDtoList = memberMapper.toDtoList(all);
+            return ApiResponse.<List<MemberDto>>builder()
+                    .success(true)
+                    .content(memberDtoList)
+                    .message("ok")
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }

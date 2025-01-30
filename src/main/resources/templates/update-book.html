@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Create book</title>
+</head>
+<body>
+<div class="text-bg-secondary p-3">Secondary with contrasting color</div>
+
+<form th:action="@{/books/update/{id}(id=${book.getId()})}" th:method="post">
+  <div class="mb-3">
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" name="title" th:value="${book.getTitle()}">
+  </div>
+  <div class="mb-3">
+    <label for="author" class="form-label">Author</label>
+    <input type="text" class="form-control" id="author" name="author" th:value="${book.getAuthor()}">
+  </div>
+  <div class="mb-3">
+    <label for="isbn" class="form-label">ISBN: </label>
+    <input type="text" class="form-control" id="isbn" name="isbn" th:value="${book.getIsbn()}">
+  </div>
+  <div class="mb-3">
+    <label for="publisher" class="form-label">Publisher</label>
+    <input type="text" class="form-control" id="publisher" name="publisher" th:value="${book.getPublisher()}">
+  </div>
+  <div class="mb-3">
+    <label for="count" class="form-label">Count</label>
+    <input type="number" class="form-control" id="count" name="count" th:value="${book.getCount()}">
+  </div>
+  <div class="mb-3">
+    <label for="pageCount" class="form-label">Page Count</label>
+    <input type="number" class="form-control" id="pageCount" name="pageCount" th:value="${book.getPageCount()}">
+  </div>
+  <div class="mb-3">
+    <label for="publicationDate" class="form-label">PublicationDate</label>
+    <input type="date" class="form-control" id="publicationDate" name="publicationDate" th:value="${book.getPublicationDate()}">
+  </div>
+  <div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <input type="text" class="form-control" id="category" name="category" th:value="${book.getCategory()}">
+  </div>
+  <div class="mb-3">
+    <label for="imageUrl" class="form-label">Image Url</label>
+    <input type="url" class="form-control" id="imageUrl" name="imageUrl" th:value="${book.getImageUrl()}">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+</html>

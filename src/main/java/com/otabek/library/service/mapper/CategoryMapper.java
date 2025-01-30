@@ -6,6 +6,8 @@ import com.otabek.library.repository.BookRepository;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public abstract class CategoryMapper {
     @Autowired
@@ -16,6 +18,7 @@ public abstract class CategoryMapper {
     @Mapping(target = "books", ignore = true)
     public abstract Category toEntity(CategoryDto categoryDto);
 
+    @Named("toDto")
     @Mapping(target = "books", ignore = true)
     public abstract CategoryDto toDto(Category category);
 
@@ -26,4 +29,6 @@ public abstract class CategoryMapper {
     @Mapping(target = "books", expression = "java(bookMapper.toDtoList(bookRepository.findAllByCategory_Name(category.getName())))")
     public abstract CategoryDto toDtoWithAllEntity(Category category);
 
+    @IterableMapping(qualifiedByName = "toDto")
+    public abstract List<CategoryDto> toDtoList(List<Category> all);
 }

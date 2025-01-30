@@ -1,4 +1,4 @@
-package com.otabek.library.controller;
+package com.otabek.library.apicontroller;
 
 import com.otabek.library.dto.ApiResponse;
 import com.otabek.library.dto.TransactionDto;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("transactions")
+@RequestMapping("api/v1/transactions")
 public class TransactionController {
 
     private final TransactionService transactionService;

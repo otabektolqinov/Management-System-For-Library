@@ -1,4 +1,4 @@
-package com.otabek.library.controller;
+package com.otabek.library.apicontroller;
 
 import com.otabek.library.dto.ApiResponse;
 import com.otabek.library.dto.BookDto;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("books")
+@RequestMapping("api/v1/books")
 public class BookController {
 
     private final BookService bookService;

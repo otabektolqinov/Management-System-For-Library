@@ -64,6 +64,15 @@ public class BookServiceImpl implements BookService {
             if (optional.isEmpty()){
                 throw new ContentNotFoundException(String.format("Book with %d id is not found", id));
             }
+
+            System.out.println("a");
+            System.out.println("a");
+            System.out.println("a");
+            System.out.println("a");
+            System.out.println("a");
+            System.out.println("a");
+            System.out.println("a");
+            System.out.println("a");
             Book book = bookMapper.updateAllFields(optional.get(), dto);
             Book saved = bookRepository.save(book);
 

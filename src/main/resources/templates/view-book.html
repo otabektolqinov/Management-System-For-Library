@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Get all books</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="text-bg-secondary p-3">Secondary with contrasting color</div>
+<div class="position-absolute top-50 start-50 translate-middle">
+<div class="container mt-4">
+            <div class="card" style="width: 18rem;">
+                <img th:src="${book.getImageUrl()}" class="card-img-top" alt="..." th:width="400" th:height="300">
+                <div class="card-body">
+                    <h5 th:text="${book.getTitle()}"  class="card-title"></h5>
+                    <p th:text="${book.getCategory()}" class="text-body-secondary"></p>
+                    <p th:text="${book.getPublicationDate()}" class="card-text"></p>
+                    <p th:text="${book.getPageCount()}" class="card-text"></p>
+                    <p th:text="${book.getAvailabilityStatus()}" class="card-text"></p>
+                    <p th:text="${book.getCount()}" class="card-text" ></p>
+                    <a th:href="@{/books/update/{id}(id=${book.getId()})}" class="btn btn-warning">Edit</a>
+                    <a th:href="@{/books/delete/{id}(id=${book.getId()})}" class="btn btn-danger">Delete</a>
+                    <a th:href="@{/books/borrow/{id}(id=${book.getId()})}" class="btn btn-success">Borrow</a>
+                </div>
+            </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

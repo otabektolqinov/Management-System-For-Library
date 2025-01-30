@@ -1,4 +1,4 @@
-package com.otabek.library.controller;
+package com.otabek.library.apicontroller;
 
 import com.otabek.library.dto.ApiResponse;
 import com.otabek.library.dto.MemberDto;
@@ -6,8 +6,10 @@ import com.otabek.library.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("members")
+@RequestMapping("api/v1/members")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -32,5 +34,10 @@ public class MemberController {
     @DeleteMapping
     public ApiResponse<MemberDto> deleteMemberById(@RequestParam("id") Integer id){
         return memberService.deleteMemberById(id);
+    }
+
+    @GetMapping("/get-all")
+    public ApiResponse<List<MemberDto>> getAllMembers(){
+        return memberService.getAllMembers();
     }
 }

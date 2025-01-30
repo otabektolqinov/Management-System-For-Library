@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -80,5 +81,20 @@ public class LibrarianServiceImpl implements LibrarianService {
                 .success(true)
                 .message("Successfully deleted")
                 .build();
+    }
+
+    @Override
+    public ApiResponse<List<LibrarianDto>> getAllLibrarians() {
+        try {
+            List<Librarian> librarians = librarianRepository.findAllByDeletedAtIsNull();
+            List<LibrarianDto> librarianDtoList = librarianMapper.toDtoList(librarians);
+            return ApiResponse.<List<LibrarianDto>>builder()
+                    .message("ok")
+                    .content(librarianDtoList)
+                    .success(true)
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 }

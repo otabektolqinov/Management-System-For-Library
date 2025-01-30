@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>All librarians</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="text-bg-success p-3">All librarians List</div>
+<a type="button" class="btn btn-primary" th:href="@{/librarian/create}">Add librarian</a>
+
+<table class="table" >
+    <thead>
+    <tr>
+        <th scope="col" >Id</th>
+        <th scope="col" >Name</th>
+        <th scope="col" >Email</th>
+        <th scope="col" >Role</th>
+        <th scope="col" >Phone</th>
+
+    </tr>
+    </thead>
+    <tbody th:each="librarian :${librarians}">
+    <tr>
+        <th scope="row" th:text="${librarian.getId()}"></th>
+        <td th:text="${librarian.getName()}"></td>
+        <td th:text="${librarian.getEmail()}"></td>
+        <td th:text="${librarian.getRole()}"></td>
+        <td th:text="${librarian.getPhone()}"></td>
+        <td>
+            <div>
+                <a type="button" class="btn btn-warning" th:href="@{/librarian/update/{id}(id=${librarian.getId()})}">Update</a>
+            </div>
+        </td>
+        <td>
+            <div>
+                <a type="button" class="btn btn-danger" th:href="@{/librarian/delete/{id}(id=${librarian.getId()})}">Delete</a>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

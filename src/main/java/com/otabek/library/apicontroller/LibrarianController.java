@@ -1,4 +1,4 @@
-package com.otabek.library.controller;
+package com.otabek.library.apicontroller;
 
 import com.otabek.library.dto.ApiResponse;
 import com.otabek.library.dto.LibrarianDto;
@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("librarians")
+@RequestMapping("api/v1/librarians")
 @RequiredArgsConstructor
 public class LibrarianController {
 

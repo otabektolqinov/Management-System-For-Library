@@ -11,6 +11,7 @@ import com.otabek.library.service.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -82,6 +83,21 @@ public class CategoryServiceImpl implements CategoryService {
                     .build();
         } catch (ContentNotFoundException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ApiResponse<List<CategoryDto>> getAllCategories() {
+        try {
+            List<Category> all = categoryRepository.findAll();
+            List<CategoryDto> categoryDtoList = categoryMapper.toDtoList(all);
+            return ApiResponse.<List<CategoryDto>>builder()
+                    .success(true)
+                    .content(categoryDtoList)
+                    .message("ok")
+                    .build();
+        } catch (Exception e) {
+            throw new DatabaseException(e.getMessage());
         }
     }
 }
