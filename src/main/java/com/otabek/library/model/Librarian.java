@@ -24,6 +24,8 @@ public class Librarian {
     private String email;
     @PhoneValidation(message = "invalid phone number")
     private String phone;
+    @Column(nullable = false)
+    private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
 

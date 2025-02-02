@@ -21,6 +21,9 @@ public class LibrarianDto {
     @NotBlank(message = "email cannot be blank")
     @NotNull(message = "email cannot be null")
     private String email;
+    @NotNull(message = "password cannot be null")
+    @NotBlank(message = "password cannot be blank")
+    private String password;
     @PhoneValidation(message = "invalid phone number")
     private String phone;
     private String role;

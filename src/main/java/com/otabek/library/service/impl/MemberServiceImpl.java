@@ -9,6 +9,7 @@ import com.otabek.library.repository.MemberRepository;
 import com.otabek.library.service.MemberService;
 import com.otabek.library.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,10 +21,12 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
+    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Override
     public ApiResponse<MemberDto> createMember(MemberDto dto) {
         try {
+            dto.setPassword(encoder.encode(dto.getPassword()));
             Member member = memberMapper.toEntity(dto);
             Member saved = memberRepository.save(member);
             return ApiResponse.<MemberDto>builder()
@@ -43,10 +46,11 @@ public class MemberServiceImpl implements MemberService {
             if (optional.isEmpty()){
                 throw new ContentNotFoundException(String.format("Member with %d id is not found", id));
             }
+            MemberDto dto = memberMapper.toDto(optional.get());
             return ApiResponse.<MemberDto>builder()
                     .message("ok")
                     .success(true)
-                    .content(memberMapper.toDto(optional.get()))
+                    .content(dto)
                     .build();
         } catch (ContentNotFoundException e) {
             throw new DatabaseException(e.getMessage());

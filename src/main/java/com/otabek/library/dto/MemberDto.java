@@ -23,6 +23,9 @@ public class MemberDto {
     private String email;
     @PhoneValidation(message = "invalid phone number")
     private String phone;
+    @NotNull(message = "password cannot be null")
+    @NotBlank(message = "password cannot be blank")
+    private String password;
     @NotNull(message = "membership cannot be null")
     private String membership;
     private String role;
