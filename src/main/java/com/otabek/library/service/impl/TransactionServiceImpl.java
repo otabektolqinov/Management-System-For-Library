@@ -7,6 +7,7 @@ import com.otabek.library.exceptions.DatabaseException;
 import com.otabek.library.model.Book;
 import com.otabek.library.model.Transaction;
 import com.otabek.library.repository.BookRepository;
+import com.otabek.library.repository.MemberRepository;
 import com.otabek.library.repository.TransactionRepository;
 import com.otabek.library.service.TransactionService;
 import com.otabek.library.service.mapper.TransactionMapper;
@@ -23,14 +24,17 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
     private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public ApiResponse<TransactionDto> createTransaction(Integer memberId, Integer bookId) {
         try {
             Transaction entity = new Transaction();
             changeBookCount(bookId, '-');
+            entity.setBook(bookRepository.findByIdAndDeletedAtIsNull(bookId).get());
+            entity.setMember(memberRepository.findById(memberId).get());
             entity.setIssueDate(LocalDate.now());
-            entity.setIssueDate(entity.getIssueDate().plusDays(10));
+            entity.setDueDate(entity.getIssueDate().plusDays(10));
             Transaction saved = transactionRepository.save(entity);
 
             return ApiResponse.<TransactionDto>builder()
@@ -52,16 +56,22 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = optional.get();
         transaction.setReturnDate(LocalDate.now());
 
-        if (transaction.getReturnDate().isAfter(transaction.getDueDate())){
+        if (LocalDate.now().isAfter(transaction.getDueDate())){
             transaction.setFine(12000d);
         }
         changeBookCount(bookId, '+');
-
+        Transaction saved = transactionRepository.save(transaction);
         return ApiResponse.<TransactionDto>builder()
                 .success(true)
-                .content(transactionMapper.toDto(transaction))
+                .content(transactionMapper.toDto(saved))
                 .message("ok")
                 .build();
+    }
+
+    @Override
+    public Boolean isBookBorrowedByMember(Integer bookId, Integer memberId) {
+        Optional<Transaction> transactionByBookIdAndMemberIdAndReturnDateIsNull = transactionRepository.findTransactionByBook_IdAndMember_IdAndReturnDateIsNull(bookId, memberId);
+        return transactionByBookIdAndMemberIdAndReturnDateIsNull.isPresent();
     }
 
     private void changeBookCount(Integer bookId, char addOrrSubtract){

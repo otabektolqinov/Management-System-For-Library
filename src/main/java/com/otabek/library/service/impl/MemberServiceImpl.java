@@ -5,6 +5,7 @@ import com.otabek.library.dto.MemberDto;
 import com.otabek.library.exceptions.ContentNotFoundException;
 import com.otabek.library.exceptions.DatabaseException;
 import com.otabek.library.model.Member;
+import com.otabek.library.model.Role;
 import com.otabek.library.repository.MemberRepository;
 import com.otabek.library.service.MemberService;
 import com.otabek.library.service.mapper.MemberMapper;
@@ -28,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
         try {
             dto.setPassword(encoder.encode(dto.getPassword()));
             Member member = memberMapper.toEntity(dto);
+            member.setRole(Role.MEMBER);
             Member saved = memberRepository.save(member);
             return ApiResponse.<MemberDto>builder()
                     .content(memberMapper.toDto(saved))

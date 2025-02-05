@@ -21,9 +21,19 @@
                     <p th:text="${book.getPageCount()}" class="card-text"></p>
                     <p th:text="${book.getAvailabilityStatus()}" class="card-text"></p>
                     <p th:text="${book.getCount()}" class="card-text" ></p>
-                    <a th:href="@{/books/update/{id}(id=${book.getId()})}" class="btn btn-warning">Edit</a>
-                    <a th:href="@{/books/delete/{id}(id=${book.getId()})}" class="btn btn-danger">Delete</a>
-                    <a th:href="@{/books/borrow/{id}(id=${book.getId()})}" class="btn btn-success">Borrow</a>
+                    <div th:if="${whiteList.contains(member.getRole())}">
+                        <a th:href="@{/books/update/{id}(id=${book.getId()})}" class="btn btn-warning">Edit</a>
+                    </div>
+                    <div th:if="${whiteList.contains(member.getRole())}">
+                        <a th:href="@{/books/delete/{id}(id=${book.getId()})}" class="btn btn-danger">Delete</a>
+                    </div>
+                    <div th:if="${isBorrowed}">
+                        <a th:href="@{/books/return/{id}/{memberId}(id=${book.id}, memberId=${member.getId()})}" class="btn btn-danger mt-2">Return Book</a>
+                    </div>
+                    <div th:unless="${isBorrowed}">
+                        <a th:href="@{/books/borrow/{id}/{memberId}(id=${book.id}, memberId=${member.getId()})}" class="btn btn-success mt-2">Borrow Book</a>
+                    </div>
+<!--                    <a th:href="@{/books/borrow/{id}/{memberId}(id=${book.getId()}, memberId=${memberId})}" class="btn btn-success">Borrow</a>-->
                 </div>
             </div>
 </div>

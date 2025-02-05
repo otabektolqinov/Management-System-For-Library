@@ -1,11 +1,15 @@
 package com.otabek.library.mvc;
 
+import com.otabek.library.config.UserPrincipal;
+import com.otabek.library.model.Member;
 import com.otabek.library.repository.BookRepository;
 import com.otabek.library.repository.CategoryRepository;
 import com.otabek.library.repository.LibrarianRepository;
 import com.otabek.library.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +35,9 @@ public class AdminController {
     @GetMapping("/hello")
     public String hello(HttpSession session, Model model, HttpServletRequest httpServletRequest){
         model.addAttribute("sessionID", session.getId());
-        System.out.println(session.getAttribute("_csrf"));
-        System.out.println(httpServletRequest.getSession().getAttribute("_csrf"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        System.out.println(principal.getMember().getId());
         return "test";
     }
 

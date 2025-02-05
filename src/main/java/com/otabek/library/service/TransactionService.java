@@ -8,4 +8,5 @@ import org.springframework.stereotype.Service;
 public interface TransactionService {
     ApiResponse<TransactionDto> createTransaction(Integer memberId, Integer bookId);
     ApiResponse<TransactionDto> completeTransaction(Integer memberId, Integer bookId);
+    Boolean isBookBorrowedByMember(Integer bookId, Integer memberId);
 }
