@@ -1,6 +1,7 @@
 package com.otabek.library.service;
 
 import com.otabek.library.dto.ApiResponse;
+import com.otabek.library.dto.AuthUserDto;
 import com.otabek.library.dto.MemberDto;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -12,4 +13,6 @@ public interface MemberService {
     ApiResponse<MemberDto> deleteMemberById(Integer id);
 
     ApiResponse<List<MemberDto>> getAllMembers();
+
+    String verify(AuthUserDto dto);
 }

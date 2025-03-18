@@ -29,11 +29,12 @@ public class AdminController {
         models.put("librarian", "librarian/get-all");
         models.put("member", "members/get-all");
         model.addAttribute("models", models);
+        System.out.println("someone tried to access");
         return "admin-panel";
     }
 
     @GetMapping("/hello")
-    public String hello(HttpSession session, Model model, HttpServletRequest httpServletRequest){
+    public String hello(HttpSession session, Model model){
         model.addAttribute("sessionID", session.getId());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();

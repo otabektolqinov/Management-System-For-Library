@@ -1,6 +1,7 @@
 package com.otabek.library.service.impl;
 
 import com.otabek.library.dto.ApiResponse;
+import com.otabek.library.dto.AuthUserDto;
 import com.otabek.library.dto.MemberDto;
 import com.otabek.library.exceptions.ContentNotFoundException;
 import com.otabek.library.exceptions.DatabaseException;
@@ -10,6 +11,9 @@ import com.otabek.library.repository.MemberRepository;
 import com.otabek.library.service.MemberService;
 import com.otabek.library.service.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +26,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService jwtService;
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Override
@@ -109,5 +115,16 @@ public class MemberServiceImpl implements MemberService {
         } catch (Exception e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    @Override
+    public String verify(AuthUserDto dto) {
+        Authentication authentication =
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+        if (authentication.isAuthenticated())
+            return jwtService.generateToken(dto.getEmail());
+        else
+            return "Authentication failed";
     }
 }

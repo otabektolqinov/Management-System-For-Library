@@ -1,9 +1,11 @@
 package com.otabek.library.apicontroller;
 
 import com.otabek.library.dto.ApiResponse;
+import com.otabek.library.dto.AuthUserDto;
 import com.otabek.library.dto.MemberDto;
 import com.otabek.library.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +16,17 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping
     public ApiResponse<MemberDto> createMember(@RequestBody MemberDto dto){
         return memberService.createMember(dto);
     }
 
+    @PostMapping("/login")
+    public String login(@RequestBody AuthUserDto dto){
+        return memberService.verify(dto);
+    }
     @GetMapping
     public ApiResponse<MemberDto> getMemberById(@RequestParam("id") Integer id){
         return memberService.getMemberById(id);
